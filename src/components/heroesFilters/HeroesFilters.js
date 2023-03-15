@@ -1,72 +1,57 @@
-import {useHttp} from '../../hooks/http.hook';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import classNames from 'classnames';
-
-import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
-import Spinner from '../spinner/Spinner';
-
-// Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
+import { useDispatch, useSelector } from "react-redux"
+import { useHttp } from "../../hooks/http.hook"
+import { heroesFetched, heroesFetching, heroesFetchingError, heroesFilter } from "../../actions";
+const classNames = require('classnames')
 
 const HeroesFilters = () => {
+    const { filters } = useSelector(state => state);
+    const dispatch = useDispatch()
+    const { request } = useHttp()
 
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
-    const dispatch = useDispatch();
-    const {request} = useHttp();
-
-    // Запрос на сервер для получения фильтров и последовательной смены состояния
-    useEffect(() => {
-        dispatch(filtersFetching());
-        request("http://localhost:3001/filters")
-            .then(data => dispatch(filtersFetched(data)))
-            .catch(() => dispatch(filtersFetchingError()))
-
-        // eslint-disable-next-line
-    }, []);
-
-    if (filtersLoadingStatus === "loading") {
-        return <Spinner/>;
-    } else if (filtersLoadingStatus === "error") {
-        return <h5 className="text-center mt-5">Ошибка загрузки</h5>
+    const onFilter = (filter) => {
+        dispatch(heroesFetching())
+        const param = filter === 'all' ? '' : `?element=${filter}`
+        dispatch(heroesFilter(filter))
+        request(`http://localhost:3001/heroes${param}`)
+            .then(data => dispatch(heroesFetched(data)))
+            .catch(() => dispatch(heroesFetchingError()))
     }
 
-    const renderFilters = (arr) => {
-        if (arr.length === 0) {
-            return <h5 className="text-center mt-5">Фильтры не найдены</h5>
-        }
-
-        // Данные в json-файле я расширил классами и текстом
-        return arr.map(({name, className, label}) => {
-
-            // Используем библиотеку classnames и формируем классы динамически
-            const btnClass = classNames('btn', className, {
-                'active': name === activeFilter
-            });
-            
-            return <button 
-                        key={name} 
-                        id={name} 
-                        className={btnClass}
-                        onClick={() => dispatch(activeFilterChanged(name))}
-                        >{label}</button>
-        })
-    }
-
-    const elements = renderFilters(filters);
 
     return (
         <div className="card shadow-lg mt-4">
             <div className="card-body">
                 <p className="card-text">Отфильтруйте героев по элементам</p>
                 <div className="btn-group">
-                    {elements}
+                    <button
+                        onClick={() => onFilter('all')}
+                        className={classNames("btn btn-outline-dark", { active: filters === 'all' })}>
+                        Все
+                    </button>
+                    <button
+                        onClick={() => onFilter('fire')}
+                        className={classNames("btn btn-danger", { active: filters === 'fire' })}>
+                        Огонь
+                    </button>
+                    <button
+                        onClick={() => onFilter('water')}
+                        className={classNames("btn btn-primary", { active: filters === 'water' })}>
+                        Вода
+                    </button>
+                    <button
+                        onClick={() => onFilter('wind')}
+                        className={classNames("btn btn-success", { active: filters === 'wind' })}>
+                        Ветер
+                    </button>
+                    <button
+                        onClick={() => onFilter('earth')}
+                        className={classNames("btn btn-secondary", { active: filters === 'earth' })}>
+                        Земля
+                    </button>
                 </div>
             </div>
         </div>
     )
 }
 
-export default HeroesFilters;
+export default HeroesFilters
