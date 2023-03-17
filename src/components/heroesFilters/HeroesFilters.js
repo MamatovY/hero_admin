@@ -1,4 +1,4 @@
-import {useHttp} from '../../hooks/http.hook';
+import { useHttp } from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames';
@@ -13,9 +13,9 @@ import Spinner from '../spinner/Spinner';
 
 const HeroesFilters = () => {
 
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
+    const { filters, filtersLoadingStatus, activeFilter } = useSelector(state => state.filters);
     const dispatch = useDispatch();
-    const {request} = useHttp();
+    const { request } = useHttp();
 
     // Запрос на сервер для получения фильтров и последовательной смены состояния
     useEffect(() => {
@@ -28,7 +28,7 @@ const HeroesFilters = () => {
     }, []);
 
     if (filtersLoadingStatus === "loading") {
-        return <Spinner/>;
+        return <Spinner />;
     } else if (filtersLoadingStatus === "error") {
         return <h5 className="text-center mt-5">Ошибка загрузки</h5>
     }
@@ -39,19 +39,19 @@ const HeroesFilters = () => {
         }
 
         // Данные в json-файле я расширил классами и текстом
-        return arr.map(({name, className, label}) => {
+        return arr.map(({ name, className, label }) => {
 
             // Используем библиотеку classnames и формируем классы динамически
             const btnClass = classNames('btn', className, {
                 'active': name === activeFilter
             });
-            
-            return <button 
-                        key={name} 
-                        id={name} 
-                        className={btnClass}
-                        onClick={() => dispatch(activeFilterChanged(name))}
-                        >{label}</button>
+
+            return <button
+                key={name}
+                id={name}
+                className={btnClass}
+                onClick={() => dispatch(activeFilterChanged(name))}
+            >{label}</button>
         })
     }
 
