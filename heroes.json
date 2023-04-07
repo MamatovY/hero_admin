@@ -13,22 +13,10 @@
       "element": "wind"
     },
     {
-      "id": "df5b291d-a82a-4071-865a-b184be3f4187",
-      "name": "dsad",
-      "description": "dsad",
-      "element": "fire"
-    },
-    {
-      "id": "455f4f53-c5af-4cdc-b018-f0ae96875453",
-      "name": "dsafdf",
-      "description": "fdfsdf",
+      "id": 3,
+      "name": "Морской герой",
+      "description": "Как аквамен, но не из DC",
       "element": "water"
-    },
-    {
-      "id": "a5d6dee3-5112-4d45-929b-1bc9698bbe8c",
-      "name": "dasdas",
-      "description": "dsadas",
-      "element": "fire"
     }
   ],
   "filters": [

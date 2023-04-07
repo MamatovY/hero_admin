@@ -30,7 +30,6 @@ const HeroesList = () => {
     const { request } = useHttp()
 
     useEffect(() => {
-        console.log('Effect');
         dispatch(fetchHeroes(request))
 
         // eslint-disable-next-line
