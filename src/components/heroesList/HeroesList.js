@@ -2,13 +2,13 @@ import { useHttp } from '../../hooks/http.hook'
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 
-import { fetchHeroes, heroDeleted } from '../../actions'
 import HeroesListItem from "../heroesListItem/HeroesListItem"
 import Spinner from '../spinner/Spinner'
 
 import './heroesList.scss'
+import { heroDeleted, fetchHeroes } from './heroesSlice'
 
 const HeroesList = () => {
 
@@ -30,14 +30,14 @@ const HeroesList = () => {
     const { request } = useHttp()
 
     useEffect(() => {
-        dispatch(fetchHeroes(request))
+        dispatch(fetchHeroes())
 
         // eslint-disable-next-line
     }, [])
 
     const onDelete = useCallback((id) => {
         request(`http://localhost:3001/heroes/${id}`, "DELETE")
-            .then(data => console.log(data, 'Deleted'))
+            .then(data => console.log(data))
             .then(dispatch(heroDeleted(id)))
             .catch(err => console.log(err))
         // eslint-disable-next-line  

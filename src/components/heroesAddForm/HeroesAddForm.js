@@ -2,8 +2,8 @@ import { useHttp } from '../../hooks/http.hook';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
+import { heroCreated } from '../heroesList/heroesSlice';
 
-import { heroCreated } from '../../actions';
 
 const HeroesAddForm = () => {
     // Состояния для контроля формы
