@@ -16,7 +16,7 @@ const HeroesList = () => {
     const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus)
     const dispatch = useDispatch()
     const { request } = useHttp()
-
+    //rtk-query
     useEffect(() => {
         dispatch(fetchHeroes())
 
