@@ -1,4 +1,3 @@
-import { useHttp } from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import store from '../../store';
@@ -12,7 +11,6 @@ const HeroesFilters = () => {
     const { filtersLoadingStatus, activeFilter } = useSelector(state => state.filters);
     const filters = selectAll(store.getState())
     const dispatch = useDispatch();
-
 
     // Запрос на сервер для получения фильтров и последовательной смены состояния
     useEffect(() => {
